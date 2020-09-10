@@ -25,20 +25,22 @@ namespace TelegramBot
             bool statusNumber = true;
 
             TelegramBotClient bot = new TelegramBotClient("1331063915:AAEnGb1XocJod9d6digo_q7hlnkAxpKp8R4");
+
             bot.OnMessage += (s, arg) =>
             {
-                try
+                int number;
+
+                Console.WriteLine($"{arg.Message.Chat.FirstName}: {arg.Message.Text}");
+
+                if (int.TryParse(arg.Message.Text, out number) == true)
                 {
-                    Console.WriteLine($"{arg.Message.Chat.FirstName}: {arg.Message.Text}");
-                    CheckNumber(Int32.Parse(arg.Message.Text), ref statusNumber);
+                    CheckNumber(number, ref statusNumber);
                     bot.SendTextMessageAsync(arg.Message.Chat.Id, $"Статус вашего числа: {statusNumber}");
                 }
-                catch
-                {
+                else
                     bot.SendTextMessageAsync(arg.Message.Chat.Id, $"{arg.Message.Chat.FirstName}, TU DYRAK");
-                }       
             };
-            
+
             bot.StartReceiving();
             Console.ReadKey();
         }
